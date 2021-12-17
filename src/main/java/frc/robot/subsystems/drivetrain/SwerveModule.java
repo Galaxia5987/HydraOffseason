@@ -6,7 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.UnitModel;
 
-import static frc.robot.Constants.SwerveDrive.*;
+import static frc.robot.Constants.SwerveDrive.TICKS_PER_METER;
+import static frc.robot.Constants.SwerveDrive.TICKS_PER_RADIAN;
 
 public class SwerveModule extends SubsystemBase {
     private final UnitModel angle_unitModel = new UnitModel(TICKS_PER_RADIAN);
@@ -60,6 +61,16 @@ public class SwerveModule extends SubsystemBase {
     public void configInverted(boolean[] inverted) {
         driveMotor.setInverted(inverted[0]);
         angleMotor.setInverted(inverted[1]);
+    }
+
+    /**
+     * Configure sensor phase for module.
+     *
+     * @param sensorPhase is the array of sensor phases.
+     */
+    public void configSensorPhase(boolean[] sensorPhase) {
+        driveMotor.setInverted(sensorPhase[0]);
+        angleMotor.setInverted(sensorPhase[1]);
     }
 
     /**

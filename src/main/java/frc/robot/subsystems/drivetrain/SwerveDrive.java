@@ -10,8 +10,6 @@ import frc.robot.Constants;
 import frc.robot.Ports;
 import frc.robot.Robot;
 
-import java.util.function.DoubleSupplier;
-
 import static frc.robot.Constants.SwerveDrive.*;
 
 public class SwerveDrive extends SubsystemBase {
@@ -22,14 +20,13 @@ public class SwerveDrive extends SubsystemBase {
             new Translation2d(-Ry, Rx),
             new Translation2d(-Ry, -Rx)
     );
+    private final SwerveModuleState[] states = new SwerveModuleState[4];
     private boolean fieldOriented;
-    private SwerveModuleState[] states = new SwerveModuleState[4];
-    private ChassisSpeeds speeds;
 
     /**
      * Constructor.
      *
-     * @param fieldOriented    whether the robot is field oriented.
+     * @param fieldOriented whether the robot is field oriented.
      */
     public SwerveDrive(boolean fieldOriented) {
         this.fieldOriented = fieldOriented;
@@ -45,7 +42,7 @@ public class SwerveDrive extends SubsystemBase {
      * @param rotation is the rotation velocity. [rad/s]
      */
     public void setStates(double vx, double vy, double rotation) {
-        this.speeds = fieldOriented ?
+        ChassisSpeeds speeds = fieldOriented ?
                 ChassisSpeeds.fromFieldRelativeSpeeds(
                         vx, vy, rotation, Rotation2d.fromDegrees(Robot.navx.getYaw())
                 ) :
@@ -66,9 +63,10 @@ public class SwerveDrive extends SubsystemBase {
 
     /**
      * Sets whether the robot is field oriented.
+     *
      * @param fieldOriented is whether the robot is field oriented.
      */
-    public void setFieldOriented(boolean fieldOriented){
+    public void setFieldOriented(boolean fieldOriented) {
         this.fieldOriented = fieldOriented;
     }
 
@@ -82,6 +80,7 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setAnglePID(Constants.SwerveDrive.anglePID[i]);
             modules[i].setDrivePID(Constants.SwerveDrive.drivePID[i]);
             modules[i].configInverted(Ports.SwerveDrive.motorINVERTED[i]);
+            modules[i].configSensorPhase(Ports.SwerveDrive.motorSENSOR_PHASE[i]);
         }
     }
 

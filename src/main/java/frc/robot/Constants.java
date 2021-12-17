@@ -9,19 +9,19 @@ public final class Constants {
     }
 
     public static class SwerveDrive {
-        public static final double[] fr_anglePID = new double[] {0, 0, 0}; // front right PID controller for angle.
-        public static final double[] fl_anglePID = new double[] {0, 0, 0}; // front left PID controller for angle.
-        public static final double[] rr_anglePID = new double[] {0, 0, 0}; // rear right PID controller for angle.
-        public static final double[] rl_anglePID = new double[] {0, 0, 0}; // rear left PID controller for angle.
+        public static final double[] fr_anglePID = new double[]{0, 0, 0}; // front right PID controller for angle.
+        public static final double[] fl_anglePID = new double[]{0, 0, 0}; // front left PID controller for angle.
+        public static final double[] rr_anglePID = new double[]{0, 0, 0}; // rear right PID controller for angle.
+        public static final double[] rl_anglePID = new double[]{0, 0, 0}; // rear left PID controller for angle.
 
         public static final double[][] anglePID = new double[][]{ // all the PID configurations for angle.
                 fl_anglePID, fr_anglePID, rl_anglePID, rr_anglePID
         };
 
-        public static final double[] fr_drivePID = new double[] {0, 0, 0}; // front right PID controller for drive.
-        public static final double[] fl_drivePID = new double[] {0, 0, 0}; // front left PID controller for drive.
-        public static final double[] rr_drivePID = new double[] {0, 0, 0}; // rear right PID controller for drive.
-        public static final double[] rl_drivePID = new double[] {0, 0, 0}; // rear left PID controller for drive.
+        public static final double[] fr_drivePID = new double[]{0, 0, 0}; // front right PID controller for drive.
+        public static final double[] fl_drivePID = new double[]{0, 0, 0}; // front left PID controller for drive.
+        public static final double[] rr_drivePID = new double[]{0, 0, 0}; // rear right PID controller for drive.
+        public static final double[] rl_drivePID = new double[]{0, 0, 0}; // rear left PID controller for drive.
 
         public static final double[][] drivePID = new double[][]{ // all the PID configurations for drive.
                 fl_drivePID, fr_drivePID, rl_drivePID, rr_drivePID
