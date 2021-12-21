@@ -11,6 +11,8 @@ public class SwerveModuleTest {
     public void setAngle() {
         double delta = 1e-3; // 1 / 10^3
         SwerveModule module = new SwerveModule(0);
-        Assert.assertEquals(-30, module.getclosest(0, 30), delta);
+        Assert.assertEquals(90, module.getclosest(270, 0), delta);
+        Assert.assertEquals(30, module.getclosest(30, 0), delta);
+        Assert.assertEquals(120, module.getclosest(30, 270), delta);
     }
 }

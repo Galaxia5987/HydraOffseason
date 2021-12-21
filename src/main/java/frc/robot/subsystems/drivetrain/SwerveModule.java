@@ -35,13 +35,15 @@ public class SwerveModule {
             angleMotor.set(ControlMode.Position, angleMotor.get() + unitModel.toTicks(( Angle - getAngle())));
         }
     */
-    public int getclosest(double requiredAngle, double currentAngle, double longerWay, double shorterWay) {
-        if (requiredAngle - currentAngle > 180) {
-            return unitModel.toTicks(360) + unitModel.toTicks((requiredAngle - currentAngle))
-        } else {
-            return unitModel.toTicks(currentAngle) + unitModel.toTicks((requiredAngle - currentAngle));
+    public double getclosest(double requiredAngle, double currentAngle) {
+        if (Math.abs(requiredAngle - currentAngle > 180)) {
+            return (360) - ((requiredAngle - currentAngle));
+        } else if (requiredAngle > 180 && currentAngle < 180 || requiredAngle < 180 && currentAngle > 180){
+            return currentAngle - requiredAngle;
         }
-
+        else {
+            return (currentAngle) + ((requiredAngle - currentAngle));
+        }
     }
 }
 
