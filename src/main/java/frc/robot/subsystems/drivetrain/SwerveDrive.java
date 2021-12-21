@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drivetrain;
 
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveDrive extends SubsystemBase {
@@ -11,8 +12,8 @@ public class SwerveDrive extends SubsystemBase {
 
     public SwerveDrive() {
         for (int i = 0; i < modules.length; i++) {
-            modules[i].setSpeed(21);
-            modules[i].setAngle(2232);
+//            modules[i].setSpeed(21);
+//            modules[i].setAngle(2232);
         }
     }
 }

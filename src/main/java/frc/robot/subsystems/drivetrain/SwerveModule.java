@@ -7,9 +7,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.UnitModel;
 
-public class SwerveModule extends SubsystemBase {
-    private final WPI_TalonFX driveMotor = new WPI_TalonFX(0);
-    private final WPI_TalonSRX angleMotor = new WPI_TalonSRX(0);
+public class SwerveModule {
+    //    private final WPI_TalonFX driveMotor = new WPI_TalonFX(0);
+//    private final WPI_TalonSRX angleMotor = new WPI_TalonSRX(0);
     private final UnitModel unitModel = new UnitModel(Constants.ExampleSubsystem.TICKS_TO_DEGREAS);
     private final int i;
 
@@ -18,20 +18,31 @@ public class SwerveModule extends SubsystemBase {
     }
 
 
-    public double getVelocity() {
-        return driveMotor.getSelectedSensorVelocity();
-    }
+    /*
+        public double getVelocity() {
+            return driveMotor.getSelectedSensorVelocity();
+        }
 
-    public void setVelocity(double velocity) {
-        driveMotor.set(ControlMode.Velocity, velocity);
-    }
+        public void setVelocity(double velocity) {
+            driveMotor.set(ControlMode.Velocity, velocity);
+        }
 
-    public double getAngle() {
-        return unitModel.toUnits((angleMotor.getSelectedSensorPosition() - Constants.ExampleSubsystem.INITIAL_TICKS[0]) % Constants.ExampleSubsystem.TICKS_PER_CIRCLE);
-    }
+        public double getAngle() {
+            return unitModel.toUnits((angleMotor.getSelectedSensorPosition() - Constants.ExampleSubsystem.INITIAL_TICKS[0]) % Constants.ExampleSubsystem.TICKS_PER_CIRCLE);
+        }
 
-    public void setAngle(double Angle) {
-        angleMotor.set(ControlMode.Position, angleMotor.get() + unitModel.toTicks(( Angle - getAngle())));
-    }
+        public void setAngle(double Angle) {
+            angleMotor.set(ControlMode.Position, angleMotor.get() + unitModel.toTicks(( Angle - getAngle())));
+        }
+    */
+    public int getclosest(double requiredAngle, double currentAngle, double longerWay, double shorterWay) {
+        if (requiredAngle - currentAngle > 180) {
+            return unitModel.toTicks(360) + unitModel.toTicks((requiredAngle - currentAngle))
+        } else {
+            return unitModel.toTicks(currentAngle) + unitModel.toTicks((requiredAngle - currentAngle));
+        }
 
+    }
 }
+
+
