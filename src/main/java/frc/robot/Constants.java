@@ -8,8 +8,8 @@ public final class Constants {
         public static final double Ry = 0;
         public static final int DRIVE_MOTOR = 0;
         public static final int MOTOR = 0;
-        public static final int UNIT_PER_100MS = 0;
-        public static final int TICKS_PER_UNIT = 0;
+        public static final int VELOCITY_TICKS_PER_UNIT = 0;
+        public static final int DEGREE_TICKS_PER_UNIT = 0;
     }
 
     public static class ExampleSubsystem {

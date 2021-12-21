@@ -7,39 +7,40 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.UnitModel;
 
-import java.awt.image.TileObserver;
-
 public class SwerveModule extends SubsystemBase {
     private final TalonSRX motor = new TalonSRX(Constants.Swerve.MOTOR);
     private final TalonFX driveMotor = new TalonFX(Constants.Swerve.MOTOR);
-    private final UnitModel unitModel = new UnitModel(Constants.Swerve.TICKS_PER_UNIT);
+    private final UnitModel unitModelVelocity = new UnitModel(Constants.Swerve.VELOCITY_TICKS_PER_UNIT);
+    private final UnitModel unitModelDegree = new UnitModel(Constants.Swerve.DEGREE_TICKS_PER_UNIT);
 
-    public double setAngle(double angle) {
-        motor.set(ControlMode.Position, angle );
+    public double getAngle() {
+        return unitModelDegree.toUnits(motor.getSelectedSensorPosition());
     }
 
-    public double getAngle{
-        return ;
+    public void setAngle(double angle) {
+        motor.set(ControlMode.Position, unitModelDegree.toTicks(angle));
+    }
+
+    public double getVelocity() {
+        return unitModelVelocity.toVelocity(motor.getSelectedSensorVelocity());
+    }
+
+    public void setVelocity(double velocity) {
+        driveMotor.set(ControlMode.Velocity, unitModelVelocity.toTicks100ms(velocity));
+    }
+
+    public void state(double getVelocity, double getAngle) {
+        setAngle(getAngle);
+        setVelocity(getVelocity);
+    }
+
+    public void stop() {
+        setVelocity(0);
+        setAngle(getAngle());
     }
 
 
-    public double setVelocity(double velocity) {
-        motor.set(ControlMode.Velocity, velocity);
+    public void maxPower() {
     }
 
-    public double getVelocity(){
-        return unitModel().toVelocity(motor.getSelectedSensorVelocity());
-    }
-
-    public double state(double getVelocity, double getAngle) {
-
-    }
-
-    public void stop(){
-
-    }
-
-    public void maxPower(){
-
-    }
 }
