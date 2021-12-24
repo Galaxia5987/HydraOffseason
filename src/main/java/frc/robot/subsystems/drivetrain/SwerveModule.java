@@ -36,10 +36,11 @@ public class SwerveModule {
         }
     */
     public double getclosest(double requiredAngle, double currentAngle) {
-        if (Math.abs(requiredAngle - currentAngle > 180)) {
+        if 
+        if (requiredAngle - currentAngle > 180) {
             return (360) - ((requiredAngle - currentAngle));
-        } else if (requiredAngle > 180 && currentAngle < 180 || requiredAngle < 180 && currentAngle > 180){
-            return currentAngle - requiredAngle;
+        } else if (requiredAngle >= 180 && currentAngle <= 180 || requiredAngle <= 180 && currentAngle >= 180){
+            return 360 - (currentAngle - requiredAngle);
         }
         else {
             return (currentAngle) + ((requiredAngle - currentAngle));

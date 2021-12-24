@@ -14,5 +14,9 @@ public class SwerveModuleTest {
         Assert.assertEquals(90, module.getclosest(270, 0), delta);
         Assert.assertEquals(30, module.getclosest(30, 0), delta);
         Assert.assertEquals(120, module.getclosest(30, 270), delta);
+        Assert.assertEquals(180, module.getclosest(0, 180), delta);
+        Assert.assertEquals(0, module.getclosest(30, 390), delta);
+        Assert.assertEquals(0, module.getclosest(-330, 390), delta);
+        // 0 - 360
     }
 }
