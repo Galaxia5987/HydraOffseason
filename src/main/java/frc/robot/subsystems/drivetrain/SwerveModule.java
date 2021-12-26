@@ -1,22 +1,46 @@
 package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.subsystems.UnitModel;
 
 public class SwerveModule extends SubsystemBase {
-    private final TalonSRX angleMotor = new TalonSRX(Constants.Swerve.MOTOR);
-    private final TalonFX driveMotor = new TalonFX(Constants.Swerve.MOTOR);
+    private WPI_TalonSRX angleMotor;
+    private WPI_TalonFX driveMotor;
     private final UnitModel unitModelVelocity = new UnitModel(Constants.Swerve.VELOCITY_TICKS_PER_UNIT);
     private final UnitModel unitModelDegree = new UnitModel(Constants.Swerve.DEGREE_TICKS_PER_UNIT);
-    private final int i;
+    private  int i;
 
     public SwerveModule(int i) {
         this.i = i;
+
+        this.angleMotor = new WPI_TalonSRX(Constants.Swerve.ANGLE_MOTOR[i]);
+        angleMotor.config_kP(0, Constants.Swerve.ANGLE_MOTOR_PID_P[i]);
+        angleMotor.config_kI(0, Constants.Swerve.ANGLE_MOTOR_PID_I[i]);
+        angleMotor.config_kD(0, Constants.Swerve.ANGLE_MOTOR_PID_D[i]);
+        this.angleMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
+        angleMotor.enableVoltageCompensation(true);
+
+
+        this.driveMotor = new WPI_TalonFX(Constants.Swerve.DRIVE_MOTOR[i]);
+        driveMotor.config_kP(0, Constants.Swerve.ANGLE_MOTOR_PID_P[i]);
+        driveMotor.config_kI(0, Constants.Swerve.ANGLE_MOTOR_PID_I[i]);
+        driveMotor.config_kD(0, Constants.Swerve.ANGLE_MOTOR_PID_D[i]);
+        this.driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
+        driveMotor.configClosedloopRamp(Constants.Swerve.RAMP_RATE);
+        driveMotor.enableVoltageCompensation(true);
+        driveMotor.configStatorCurrentLimit(Config, Constants.Swerve.CURRENT_LIMIT);
     }
+    
+
+
+
 
     public static double getTargetError(double angle, double currentAngle) {
         angle = Math.IEEEremainder(angle, 360);

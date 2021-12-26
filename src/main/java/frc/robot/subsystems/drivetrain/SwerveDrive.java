@@ -19,10 +19,12 @@ public class SwerveDrive extends SubsystemBase {
                     new Translation2d(Rx, -Ry),
                     new Translation2d(-Rx, -Ry)
             );
-    private final SwerveModule[] swerveModules;
+    private SwerveModule[] swerveModules;
 
-    public SwerveDrive(SwerveModule[] swerveModule) {
-        this.swerveModules = swerveModule;
+    public SwerveDrive() {
+        for (int i =0; i <4 ; i ++){
+            this.swerveModules[i] = new SwerveModule(i);
+        }
     }
 
     public SwerveModule getModule(int i) {
