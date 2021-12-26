@@ -35,17 +35,21 @@ public class SwerveModule {
             angleMotor.set(ControlMode.Position, angleMotor.get() + unitModel.toTicks(( Angle - getAngle())));
         }
     */
-    public double getclosest(double requiredAngle, double currentAngle) {
-        if 
-        if (requiredAngle - currentAngle > 180) {
-            return (360) - ((requiredAngle - currentAngle));
-        } else if (requiredAngle >= 180 && currentAngle <= 180 || requiredAngle <= 180 && currentAngle >= 180){
-            return 360 - (currentAngle - requiredAngle);
+    public static  boolean isClockWise(double requiredAngle, double currentAngle){
+        return requiredAngle - currentAngle > 0;
+    }
+    public static double getclosest(double requiredAngle, double currentAngle) {
+        requiredAngle = Math.IEEEremainder(requiredAngle, 360);
+        currentAngle = Math.IEEEremainder(currentAngle, 360);
+        boolean isCW = isClockWise(requiredAngle, currentAngle);
+        if (isCW) {
+            return requiredAngle - currentAngle;
         }
         else {
-            return (currentAngle) + ((requiredAngle - currentAngle));
+            return currentAngle - requiredAngle;
         }
     }
+
 }
 
 
