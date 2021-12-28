@@ -27,7 +27,7 @@ public class SwerveModule extends SubsystemBase {
         angleMotor.config_kD(0, Constants.Swerve.ANGLE_MOTOR_PID_D[i]);
         this.angleMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
         angleMotor.enableVoltageCompensation(true);
-
+        angleMotor.configPeakCurrentLimit(Constants.Swerve.CURRENT_LIMIT, 10);
 
         this.driveMotor = new WPI_TalonFX(Constants.Swerve.DRIVE_MOTOR[i]);
         driveMotor.config_kP(0, Constants.Swerve.ANGLE_MOTOR_PID_P[i]);
@@ -36,7 +36,7 @@ public class SwerveModule extends SubsystemBase {
         this.driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         driveMotor.configClosedloopRamp(Constants.Swerve.RAMP_RATE);
         driveMotor.enableVoltageCompensation(true);
-        driveMotor.configStatorCurrentLimit(StatorCurrentLimitConfiguration Constants.Swerve.CURRENT_LIMIT );
+        driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, Constants.Swerve.CURRENT_LIMIT, Constants.Swerve.TRIGGER_CURRENT, Constants.Swerve.TRIGGER_TIME), 10);
     }
 
 

@@ -11,12 +11,11 @@ public class RobotContainer {
   public ExampleSubsystem exampleSubsystem = ExampleSubsystem.getInstance();
   private final XboxController xbox = new XboxController(Ports.Controls.XBOX);
   private final JoystickButton a = new JoystickButton(xbox, XboxController.Button.kA.value);
-
+  public static final XboxController xboxController = new XboxController(0);
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings and default commands
     configureDefaultCommands();
     configureButtonBindings();
   }

@@ -5,12 +5,12 @@ import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.subsystems.drivetrain.SwerveModule;
 
 public class Rotate extends CommandBase {
-    private final SwerveModule swerveModule;
     private final SwerveDrive swerveDrive;
+    private int [] i = {0, 1, 2, 3};
 
     public Rotate(SwerveModule swerveModule, SwerveDrive swerveDrive){
         this.swerveDrive = swerveDrive;
-        this.swerveModule = swerveModule;
+        this.i = i;
         addRequirements(swerveDrive);
     }
 

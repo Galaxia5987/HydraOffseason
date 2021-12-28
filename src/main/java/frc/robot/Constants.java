@@ -18,6 +18,12 @@ public final class Constants {
         public static final int [] DRIVE_MOTOR_PID_D = {0, 0, 0, 0,};
         public static final double RAMP_RATE = 0;
         public static final int CURRENT_LIMIT = 20;
+        public static final int TRIGGER_CURRENT = 0;
+        public static final int TRIGGER_TIME = 0;
+        public static final int FORWARD = 0;
+        public static final int STRAFE = 0;
+        public static final int ROTATION = 0;
+
     }
 
     public static class ExampleSubsystem {
