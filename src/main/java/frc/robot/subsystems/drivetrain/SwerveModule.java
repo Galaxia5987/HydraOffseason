@@ -2,6 +2,7 @@ package frc.robot.subsystems.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -35,9 +36,8 @@ public class SwerveModule extends SubsystemBase {
         this.driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         driveMotor.configClosedloopRamp(Constants.Swerve.RAMP_RATE);
         driveMotor.enableVoltageCompensation(true);
-        driveMotor.configStatorCurrentLimit(Config, Constants.Swerve.CURRENT_LIMIT);
+        driveMotor.configStatorCurrentLimit(StatorCurrentLimitConfiguration Constants.Swerve.CURRENT_LIMIT );
     }
-    
 
 
 

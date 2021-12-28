@@ -17,7 +17,7 @@ public final class Constants {
         public static final int [] ANGLE_MOTOR_PID_D = {0, 0, 0, 0,};
         public static final int [] DRIVE_MOTOR_PID_D = {0, 0, 0, 0,};
         public static final double RAMP_RATE = 0;
-        public static final double CURRENT_LIMIT = 20;
+        public static final int CURRENT_LIMIT = 20;
     }
 
     public static class ExampleSubsystem {
