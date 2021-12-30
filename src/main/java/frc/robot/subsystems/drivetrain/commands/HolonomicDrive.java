@@ -10,6 +10,7 @@ import frc.robot.subsystems.drivetrain.SwerveModule;
 
 public class HolonomicDrive extends CommandBase {
     private final SwerveDrive swerveDrives;
+    private final SwerveModule swerveModule;
     private final XboxController xboxController = RobotContainer.xboxController;
     private double rightY;
     private double leftY;
@@ -17,13 +18,8 @@ public class HolonomicDrive extends CommandBase {
 
     public HolonomicDrive(SwerveModule swerveModules, SwerveDrive swerveDrives) {
         this.swerveDrives = swerveDrives;
-        addRequirements(swerveDrives);
-    }
-
-
-    @Override
-    public void initialize() {
-
+        this.swerveModule = swerveModules;
+        addRequirements(swerveDrives, swerveModules);
     }
 
     @Override
@@ -31,15 +27,18 @@ public class HolonomicDrive extends CommandBase {
         swerveDrives.drive(Constants.Swerve.FORWARD, Constants.Swerve.STRAFE, Constants.Swerve.ROTATION);
         rightY = xboxController.getY(GenericHID.Hand.kRight);
         leftY = xboxController.getY(GenericHID.Hand.kLeft);
-    }
 
-    @Override
-    public boolean isFinished() {
-        return isFinished();
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-
+        if (Math.abs(rightY) <= 0.5){
+            rightY = 0;
+        }
+        else {
+            swerveModule.setRightPower(rightY);
+        }
+        if (Math.abs(leftY)<= 0.5){
+            leftY = 0;
+        }
+        else {
+            swerveModule.setLeftPower(leftY);
+        }
     }
 }

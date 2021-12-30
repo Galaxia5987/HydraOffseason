@@ -99,4 +99,13 @@ public class SwerveModule extends SubsystemBase {
         driveMotor.set(ControlMode.PercentOutput, 1);
         angleMotor.set(ControlMode.PercentOutput, 1);
     }
+
+    public void setRightPower(double power) {
+        driveMotor.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setLeftPower(double power) {
+        driveMotor.set(ControlMode.PercentOutput, power);
+    }
+
 }

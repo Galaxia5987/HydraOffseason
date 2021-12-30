@@ -10,7 +10,7 @@ public class Rotate extends CommandBase {
 
     public Rotate(SwerveModule swerveModule, SwerveDrive swerveDrive){
         this.swerveDrive = swerveDrive;
-        this.i = i;
+        this.i = new int[]{0, 1, 2, 3};
         addRequirements(swerveDrive);
     }
 
