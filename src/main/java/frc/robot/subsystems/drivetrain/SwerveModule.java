@@ -105,11 +105,6 @@ public class SwerveModule extends SubsystemBase {
         angleMotor.setSensorPhase(sensorPhase[1]);
     }
 
-    public void setZeroPosition(int[] positions){
-        driveMotor.setSelectedSensorPosition(positions[0]);
-        angleMotor.setSelectedSensorPosition(positions[1]);
-    }
-
     /**
      * Sets the postions of the encoders.
      *
