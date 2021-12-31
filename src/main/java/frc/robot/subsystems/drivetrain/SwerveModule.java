@@ -122,9 +122,17 @@ public class SwerveModule extends SubsystemBase {
      * @param angle is the angle to set the module to. [deg]
      */
     public void setAngle(double angle) {
-        double currAngle = getAngle() % 360;
+        double currAngle = getAngle();
+
+        currAngle %= 360;
+        currAngle = (currAngle < 0) ? (360 + currAngle) : currAngle;
+
+        angle %= 360;
+        angle = (angle < 0) ? (360 + angle) : angle;
+        
         double error = angle - currAngle;
-        error = error - ((error > TICKS_IN_ENCODER / 2) ? TICKS_IN_ENCODER : 0);
+        error = (Math.abs(error) > 180) ? (error - (360 * Math.signum(error))) : error;
+        error %= 360;
         error = Utils.checkDeadband(error, 0.01);
 
         angleMotor.set(
