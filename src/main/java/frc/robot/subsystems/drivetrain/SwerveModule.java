@@ -3,17 +3,46 @@ package frc.robot.subsystems.drivetrain;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.first.wpilibj.controller.LinearQuadraticRegulator;
+import edu.wpi.first.wpilibj.estimator.KalmanFilter;
+import edu.wpi.first.wpilibj.system.LinearSystem;
+import edu.wpi.first.wpilibj.system.LinearSystemLoop;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpiutil.math.Nat;
+import edu.wpi.first.wpiutil.math.VecBuilder;
+import edu.wpi.first.wpiutil.math.numbers.N1;
+import frc.robot.Constants;
 import frc.robot.subsystems.UnitModel;
 
 import static frc.robot.Constants.SwerveDrive.TICKS_PER_METER;
 import static frc.robot.Constants.SwerveDrive.TICKS_PER_RADIAN;
+import static frc.robot.Constants.SwerveModule.*;
 
 public class SwerveModule extends SubsystemBase {
     private final UnitModel angle_unitModel = new UnitModel(TICKS_PER_RADIAN);
     private final UnitModel drive_unitModel = new UnitModel(TICKS_PER_METER);
     private WPI_TalonFX driveMotor;
     private WPI_TalonSRX angleMotor;
+    private LinearSystem<N1, N1, N1> module = new LinearSystem<>(
+            A, B, C, D
+    );
+    private KalmanFilter<N1, N1, N1> kalmanFilter = new KalmanFilter(
+            Nat.N1(),
+            Nat.N1(),
+            module,
+            MODEL_TOLERANCE,
+            SENSOR_TOLERANCE,
+            Constants.LOOP_PERIOD
+    );
+    private LinearQuadraticRegulator<N1, N1, N1> quadraticRegulator = new LinearQuadraticRegulator<>(
+            module,
+            VecBuilder.fill(MODEL_TOLERANCE.get(0,0)),
+            VecBuilder.fill(SENSOR_TOLERANCE.get(0, 0)),
+            Constants.LOOP_PERIOD
+    );
+    private LinearSystemLoop<N1, N1, N1> linearSystemLoop = new LinearSystemLoop<>(
+            module, quadraticRegulator, kalmanFilter, NOMINAL_VOLTAGE, Constants.LOOP_PERIOD
+    );
 
     /**
      * Constructor.
@@ -91,7 +120,10 @@ public class SwerveModule extends SubsystemBase {
      * @param angle is the angle to set the module to. [rad]
      */
     public void setAngle(double angle) {
-        angleMotor.set(ControlMode.Position, angle_unitModel.toTicks(angle));
+        angleMotor.set(
+                ControlMode.Position,
+                angleMotor.getSelectedSensorPosition() + angle_unitModel.toTicks(angle)
+        );
     }
 
     /**
@@ -108,8 +140,12 @@ public class SwerveModule extends SubsystemBase {
      *
      * @param velocity is the velocity to set the module to. [m/s]
      */
-    public void setVelocity(double velocity) {
-        driveMotor.set(ControlMode.Velocity, drive_unitModel.toTicks100ms(velocity));
+    public void setVelocity(double velocity, double timeInterval) {
+        linearSystemLoop.setNextR(VecBuilder.fill(velocity));
+        linearSystemLoop.correct(VecBuilder.fill(drive_unitModel.toUnits(driveMotor.getSelectedSensorVelocity())));
+        linearSystemLoop.predict(timeInterval);
+
+        driveMotor.set(ControlMode.PercentOutput, linearSystemLoop.getU(0) / NOMINAL_VOLTAGE);
     }
 
     /**

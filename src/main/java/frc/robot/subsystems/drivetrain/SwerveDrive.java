@@ -1,5 +1,6 @@
 package frc.robot.subsystems.drivetrain;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
@@ -13,6 +14,9 @@ import frc.robot.Robot;
 import static frc.robot.Constants.SwerveDrive.*;
 
 public class SwerveDrive extends SubsystemBase {
+    private Timer timer = new Timer();
+    private double currentTime;
+    private double lastTime = 0;
     private final SwerveModule[] modules = new SwerveModule[4];
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
             new Translation2d(Ry, Rx),
@@ -31,6 +35,7 @@ public class SwerveDrive extends SubsystemBase {
     public SwerveDrive(boolean fieldOriented) {
         this.fieldOriented = fieldOriented;
 
+        timer.start();
         configModules();
     }
 
@@ -57,8 +62,10 @@ public class SwerveDrive extends SubsystemBase {
 
         for (int i = 0; i < 4; i++) {
             modules[i].setAngle(states[i].angle.getDegrees());
-            modules[i].setVelocity(states[i].speedMetersPerSecond);
+            modules[i].setVelocity(states[i].speedMetersPerSecond, currentTime - lastTime);
         }
+
+        lastTime = currentTime;
     }
 
     /**
@@ -106,6 +113,6 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
-
+        currentTime = timer.get();
     }
 }

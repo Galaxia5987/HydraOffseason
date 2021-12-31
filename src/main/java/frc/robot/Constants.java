@@ -1,8 +1,15 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpiutil.math.MatBuilder;
+import edu.wpi.first.wpiutil.math.Matrix;
+import edu.wpi.first.wpiutil.math.Nat;
+import edu.wpi.first.wpiutil.math.numbers.N1;
+import org.opencv.core.Mat;
+
 public final class Constants {
     public static final double WHEEL_RADIUS = 1;
+    public static final double LOOP_PERIOD = 0.02;
 
     public static class ExampleSubsystem {
         public static final double POWER = 0.5; // [%]
@@ -39,4 +46,28 @@ public final class Constants {
         public static final double DEAD_BAND = 0.02; // dead band for the joysticks.
     }
 
+    public static class SwerveModule{
+        public static final double NOMINAL_VOLTAGE = 12.0;
+        public static final double Kv = 1;
+        public static final double Ka = 1;
+        public static final Matrix<N1, N1> A = new MatBuilder<>(Nat.N1(), Nat.N1()).fill(
+                -Kv / Ka
+        );
+        public static final Matrix<N1, N1> B = new MatBuilder<>(Nat.N1(), Nat.N1()).fill(
+                1 / Ka
+        );
+        public static final Matrix<N1, N1> C = new MatBuilder<>(Nat.N1(), Nat.N1()).fill(
+                1
+        );
+        public static final Matrix<N1, N1> D = new MatBuilder<>(Nat.N1(), Nat.N1()).fill(
+                0
+        );
+
+        public static final Matrix<N1, N1> MODEL_TOLERANCE = new MatBuilder<>(Nat.N1(), Nat.N1()).fill(
+                0.8
+        );
+        public static final Matrix<N1, N1> SENSOR_TOLERANCE = new MatBuilder<>(Nat.N1(), Nat.N1()).fill(
+                0.2
+        );
+    }
 }
