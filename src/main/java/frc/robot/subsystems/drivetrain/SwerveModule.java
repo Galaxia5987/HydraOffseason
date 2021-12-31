@@ -16,15 +16,16 @@ import frc.robot.subsystems.UnitModel;
 import frc.robot.utils.Utils;
 
 import static frc.robot.Constants.NOMINAL_VOLTAGE;
-import static frc.robot.Constants.SwerveDrive.*;
+import static frc.robot.Constants.SwerveDrive.TICKS_PER_DEGREE_ANGLE;
+import static frc.robot.Constants.SwerveDrive.TICKS_PER_METER_DRIVE;
 import static frc.robot.Constants.SwerveModule.*;
 
 public class SwerveModule extends SubsystemBase {
     private final UnitModel angle_unitModel = new UnitModel(TICKS_PER_DEGREE_ANGLE);
     private final UnitModel drive_unitModel = new UnitModel(TICKS_PER_METER_DRIVE);
+    private final LinearSystemLoop<N1, N1, N1> linearSystemLoop;
     private WPI_TalonFX driveMotor;
     private WPI_TalonSRX angleMotor;
-    private final LinearSystemLoop<N1, N1, N1> linearSystemLoop;
 
     /**
      * Constructor.
@@ -105,9 +106,19 @@ public class SwerveModule extends SubsystemBase {
     }
 
     /**
+     * Sets the postions of the encoders.
+     *
+     * @param positions is the array of positions.
+     */
+    public void setZeroPosition(int[] positions) {
+        driveMotor.setSelectedSensorPosition(positions[0]);
+        angleMotor.setSelectedSensorPosition(positions[1]);
+    }
+
+    /**
      * Gets the current angle of the module.
      *
-     * @return the angle of the module. [rad]
+     * @return the angle of the module. [deg]
      */
     public double getAngle() {
         return Math.IEEEremainder(
@@ -129,7 +140,7 @@ public class SwerveModule extends SubsystemBase {
 
         reqAngle %= 360;
         reqAngle = (reqAngle < 0) ? (360 + reqAngle) : reqAngle;
-        
+
         double error = reqAngle - currAngle;
         error = (Math.abs(error) > 180) ? (error - (360 * Math.signum(error))) : error;
         error %= 360;
