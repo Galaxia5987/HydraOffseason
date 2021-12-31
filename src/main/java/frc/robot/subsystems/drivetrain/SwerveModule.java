@@ -14,40 +14,42 @@ import edu.wpi.first.wpiutil.math.numbers.N1;
 import frc.robot.Constants;
 import frc.robot.subsystems.UnitModel;
 
-import static frc.robot.Constants.SwerveDrive.TICKS_PER_METER;
-import static frc.robot.Constants.SwerveDrive.TICKS_PER_RADIAN;
+import static frc.robot.Constants.NOMINAL_VOLTAGE;
+import static frc.robot.Constants.SwerveDrive.TICKS_PER_METER_DRIVE;
+import static frc.robot.Constants.SwerveDrive.TICKS_PER_RADIAN_ANGLE;
 import static frc.robot.Constants.SwerveModule.*;
 
 public class SwerveModule extends SubsystemBase {
-    private final UnitModel angle_unitModel = new UnitModel(TICKS_PER_RADIAN);
-    private final UnitModel drive_unitModel = new UnitModel(TICKS_PER_METER);
+    private final UnitModel angle_unitModel = new UnitModel(TICKS_PER_RADIAN_ANGLE);
+    private final UnitModel drive_unitModel = new UnitModel(TICKS_PER_METER_DRIVE);
     private WPI_TalonFX driveMotor;
     private WPI_TalonSRX angleMotor;
-    private LinearSystem<N1, N1, N1> module = new LinearSystem<>(
-            A, B, C, D
-    );
-    private KalmanFilter<N1, N1, N1> kalmanFilter = new KalmanFilter(
-            Nat.N1(),
-            Nat.N1(),
-            module,
-            MODEL_TOLERANCE,
-            SENSOR_TOLERANCE,
-            Constants.LOOP_PERIOD
-    );
-    private LinearQuadraticRegulator<N1, N1, N1> quadraticRegulator = new LinearQuadraticRegulator<>(
-            module,
-            VecBuilder.fill(MODEL_TOLERANCE.get(0,0)),
-            VecBuilder.fill(SENSOR_TOLERANCE.get(0, 0)),
-            Constants.LOOP_PERIOD
-    );
-    private LinearSystemLoop<N1, N1, N1> linearSystemLoop = new LinearSystemLoop<>(
-            module, quadraticRegulator, kalmanFilter, NOMINAL_VOLTAGE, Constants.LOOP_PERIOD
-    );
+    private final LinearSystemLoop<N1, N1, N1> linearSystemLoop;
 
     /**
      * Constructor.
      */
     public SwerveModule() {
+        LinearSystem<N1, N1, N1> module = new LinearSystem<>(
+                A, B, C, D
+        );
+        KalmanFilter<N1, N1, N1> kalmanFilter = new KalmanFilter(
+                Nat.N1(),
+                Nat.N1(),
+                module,
+                MODEL_TOLERANCE,
+                SENSOR_TOLERANCE,
+                Constants.LOOP_PERIOD
+        );
+        LinearQuadraticRegulator<N1, N1, N1> quadraticRegulator = new LinearQuadraticRegulator<>(
+                module,
+                VecBuilder.fill(MODEL_TOLERANCE.get(0, 0)),
+                VecBuilder.fill(SENSOR_TOLERANCE.get(0, 0)),
+                Constants.LOOP_PERIOD
+        );
+        linearSystemLoop = new LinearSystemLoop<>(
+                module, quadraticRegulator, kalmanFilter, NOMINAL_VOLTAGE, Constants.LOOP_PERIOD
+        );
     }
 
     /**
@@ -98,8 +100,8 @@ public class SwerveModule extends SubsystemBase {
      * @param sensorPhase is the array of sensor phases.
      */
     public void configSensorPhase(boolean[] sensorPhase) {
-        driveMotor.setInverted(sensorPhase[0]);
-        angleMotor.setInverted(sensorPhase[1]);
+        driveMotor.setSensorPhase(sensorPhase[0]);
+        angleMotor.setSensorPhase(sensorPhase[1]);
     }
 
     /**
@@ -120,9 +122,12 @@ public class SwerveModule extends SubsystemBase {
      * @param angle is the angle to set the module to. [rad]
      */
     public void setAngle(double angle) {
+        double currAngle = angle_unitModel.toUnits(angleMotor.getSelectedSensorPosition());
+        double error = angle - currAngle;
+
         angleMotor.set(
                 ControlMode.Position,
-                angleMotor.getSelectedSensorPosition() + angle_unitModel.toTicks(angle)
+                angleMotor.getSelectedSensorPosition() + angle_unitModel.toTicks(error)
         );
     }
 
@@ -142,7 +147,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public void setVelocity(double velocity, double timeInterval) {
         linearSystemLoop.setNextR(VecBuilder.fill(velocity));
-        linearSystemLoop.correct(VecBuilder.fill(drive_unitModel.toUnits(driveMotor.getSelectedSensorVelocity())));
+        linearSystemLoop.correct(VecBuilder.fill(getVelocity()));
         linearSystemLoop.predict(timeInterval);
 
         driveMotor.set(ControlMode.PercentOutput, linearSystemLoop.getU(0) / NOMINAL_VOLTAGE);

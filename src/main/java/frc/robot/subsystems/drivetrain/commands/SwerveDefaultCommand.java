@@ -3,30 +3,30 @@ package frc.robot.subsystems.drivetrain.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
+import frc.robot.utils.Utils;
 
-import static frc.robot.Constants.SwerveDrive.DEAD_BAND;
+import static frc.robot.Constants.SwerveDrive.*;
 import static frc.robot.Ports.Controls.JOYSTICK_LEFT;
 import static frc.robot.Ports.Controls.JOYSTICK_RIGHT;
 
 public class SwerveDefaultCommand extends CommandBase {
     private final Joystick joystickRight = new Joystick(JOYSTICK_RIGHT);
     private final Joystick joystickLeft = new Joystick(JOYSTICK_LEFT);
-    private final boolean isFieldOriented;
-    private SwerveDrive swerveDrive;
+    private final SwerveDrive swerveDrive;
 
     /**
-     * Constructor.
+     * Constructor
      *
-     * @param isFieldOriented whether the robot is field oriented.
+     * @param swerveDrive is the swerve drive
      */
-    public SwerveDefaultCommand(boolean isFieldOriented, SwerveDrive swerveDrive) {
-        this.isFieldOriented = isFieldOriented;
+    public SwerveDefaultCommand(SwerveDrive swerveDrive) {
+        addRequirements(swerveDrive);
         this.swerveDrive = swerveDrive;
     }
 
     @Override
     public void initialize() {
-        swerveDrive.setFieldOriented(isFieldOriented);
+        swerveDrive.setFieldOriented(true);
     }
 
     /**
@@ -34,9 +34,9 @@ public class SwerveDefaultCommand extends CommandBase {
      */
     @Override
     public void execute() {
-        swerveDrive.setStates(swerveDrive.checkDeadBand(joystickLeft.getX(), DEAD_BAND),
-                swerveDrive.checkDeadBand(-joystickLeft.getY(), DEAD_BAND),
-                swerveDrive.checkDeadBand(joystickRight.getX(), DEAD_BAND)
+        swerveDrive.holonomicDrive(MAX_VELOCITY * Utils.checkDeadband(joystickLeft.getX(), DEADBAND),
+                MAX_VELOCITY * Utils.checkDeadband(-joystickLeft.getY(), DEADBAND),
+                MAX_ROTATIONAL_VELOCITY * Utils.checkDeadband(joystickRight.getX(), DEADBAND)
         );
     }
 

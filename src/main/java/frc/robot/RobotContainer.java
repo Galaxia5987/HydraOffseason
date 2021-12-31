@@ -8,7 +8,7 @@ import frc.robot.subsystems.example.ExampleSubsystem;
 
 public class RobotContainer {
     private final XboxController xbox = new XboxController(Ports.Controls.XBOX);
-    private final SwerveDrive swerveDrive = new SwerveDrive(true);
+    private final SwerveDrive swerveDrive = SwerveDrive.getINSTANCE();
     // The robot's subsystems and commands are defined here...
     public ExampleSubsystem exampleSubsystem = ExampleSubsystem.getInstance();
 
@@ -26,7 +26,7 @@ public class RobotContainer {
 
     private void configureDefaultCommands() {
         swerveDrive.setDefaultCommand(
-                new SwerveDefaultCommand(true, swerveDrive)
+                new SwerveDefaultCommand(swerveDrive)
         );
     }
 
