@@ -23,11 +23,14 @@ public final class Constants {
         public static final int FORWARD = 0;
         public static final int STRAFE = 0;
         public static final int ROTATION = 0;
-
+        public static final double DEADBAND = 0.05;
+        public static final double MAX_VELOCITY = 3;
+        public static final double MAX_ROTATION = 1;
+        }
     }
 
     public static class ExampleSubsystem {
         public static final double POWER = 0.5; // [%]
     }
 
-}
+

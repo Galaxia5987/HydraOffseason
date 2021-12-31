@@ -4,34 +4,31 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.subsystems.drivetrain.SwerveModule;
 
+import java.util.function.DoubleSupplier;
+
+/**
+ * Get as a parameter- swerveDrive, i, desiredAngle.
+ */
 public class Rotate extends CommandBase {
     private final SwerveDrive swerveDrive;
-    private int [] i = {0, 1, 2, 3};
+    private int i;
+    private DoubleSupplier desiredAngle;
 
-    public Rotate(SwerveModule swerveModule, SwerveDrive swerveDrive){
+    public Rotate(SwerveDrive swerveDrive, int i, DoubleSupplier desiredAngle){
         this.swerveDrive = swerveDrive;
-        this.i = new int[]{0, 1, 2, 3};
+        this.i = i;
+        this.desiredAngle = desiredAngle;
         addRequirements(swerveDrive);
-    }
-
-
-    @Override
-    public void initialize() {
-
     }
 
     @Override
     public void execute() {
-
+        desiredAngle.getAsDouble();
+        swerveDrive.getModule(i).setAngle(desiredAngle.getAsDouble());
     }
 
     @Override
     public void end(boolean interrupted) {
-       end(interrupted);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
+    swerveDrive.getModule(i).stop();
     }
 }

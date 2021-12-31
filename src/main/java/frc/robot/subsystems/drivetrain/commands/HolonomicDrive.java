@@ -8,37 +8,41 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.drivetrain.SwerveDrive;
 import frc.robot.subsystems.drivetrain.SwerveModule;
 
+/**
+ *  Get- swerveDrive, xboxController, i.
+ */
 public class HolonomicDrive extends CommandBase {
     private final SwerveDrive swerveDrives;
-    private final SwerveModule swerveModule;
     private final XboxController xboxController = RobotContainer.xboxController;
-    private double rightY;
-    private double leftY;
+    private int i;
 
-
-    public HolonomicDrive(SwerveModule swerveModules, SwerveDrive swerveDrives) {
+    public HolonomicDrive(SwerveDrive swerveDrives, int i) {
         this.swerveDrives = swerveDrives;
-        this.swerveModule = swerveModules;
-        addRequirements(swerveDrives, swerveModules);
+        this.i = i;
+        addRequirements(swerveDrives);
     }
 
     @Override
     public void execute() {
-        swerveDrives.drive(Constants.Swerve.FORWARD, Constants.Swerve.STRAFE, Constants.Swerve.ROTATION);
-        rightY = xboxController.getY(GenericHID.Hand.kRight);
-        leftY = xboxController.getY(GenericHID.Hand.kLeft);
+        double forward = xboxController.getY(GenericHID.Hand.kLeft) * Constants.Swerve.MAX_VELOCITY;
+        double strafe = xboxController.getX(GenericHID.Hand.kRight) * Constants.Swerve.MAX_VELOCITY;
+        double rotation = xboxController.getX(GenericHID.Hand.kLeft) * Constants.Swerve.MAX_ROTATION;
 
-        if (Math.abs(rightY) <= 0.5){
-            rightY = 0;
+        if (Math.abs(forward)<= Constants.Swerve.DEADBAND * Constants.Swerve.MAX_VELOCITY){
+            forward = 0;
         }
-        else {
-            swerveModule.setRightPower(rightY);
+        if (Math.abs(strafe) <= Constants.Swerve.DEADBAND * Constants.Swerve.MAX_VELOCITY){
+            strafe = 0;
         }
-        if (Math.abs(leftY)<= 0.5){
-            leftY = 0;
+        if (Math.abs(rotation)<= Constants.Swerve.DEADBAND * Constants.Swerve.MAX_ROTATION){
+            rotation = 0;
         }
-        else {
-            swerveModule.setLeftPower(leftY);
-        }
+        
+        swerveDrives.drive(forward, strafe, rotation);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        swerveDrives.getModule(i).stop();
     }
 }
