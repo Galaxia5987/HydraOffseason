@@ -17,30 +17,30 @@ public final class Ports {
     }
 
     public static class SwerveDrive {
-        private static final int[] fr_ports = new int[]{0, 0}; // ports for the front right motors. [drive, angle]
-        private static final int[] fl_ports = new int[]{0, 0}; // ports for the front left motors. [drive, angle]
-        private static final int[] rr_ports = new int[]{0, 0}; // ports for the rear right motors. [drive, angle]
-        private static final int[] rl_ports = new int[]{0, 0}; // ports for the rear left motors. [drive, angle]
+        private static final int[] fl_Ports = new int[]{0, 0}; // ports for the front left motors. [drive, angle]
+        private static final int[] fr_Ports = new int[]{0, 0}; // ports for the front right motors. [drive, angle]
+        private static final int[] rl_Ports = new int[]{0, 0}; // ports for the rear left motors. [drive, angle]
+        private static final int[] rr_Ports = new int[]{0, 0}; // ports for the rear right motors. [drive, angle]
 
         public static final int[][] motorPorts = new int[][]{ // all the ports for the motors.
-                fl_ports, fr_ports, rl_ports, rr_ports
+                fl_Ports, fr_Ports, rl_Ports, rr_Ports
         };
 
-        private static final boolean[] fr_INVERTED = new boolean[]{false, false}; // inversions for the front right motors. [drive, angle]
         private static final boolean[] fl_INVERTED = new boolean[]{false, false}; // inversions for the front left motors. [drive, angle]
-        private static final boolean[] rr_INVERTED = new boolean[]{false, false}; // inversions for the rear right motors. [drive, angle]
+        private static final boolean[] fr_INVERTED = new boolean[]{false, false}; // inversions for the front right motors. [drive, angle]
         private static final boolean[] rl_INVERTED = new boolean[]{false, false}; // inversions for the rear left motors. [drive, angle]
+        private static final boolean[] rr_INVERTED = new boolean[]{false, false}; // inversions for the rear right motors. [drive, angle]
 
-        public static final boolean[][] motorINVERTED = new boolean[][]{ // all the inversions for the motors.
+        public static final boolean[][] motor_INVERTED = new boolean[][]{ // all the inversions for the motors.
                 fl_INVERTED, fr_INVERTED, rl_INVERTED, rr_INVERTED
         };
 
-        private static final boolean[] fr_SENSOR_PHASE = new boolean[]{false, false}; // inversions for the front right motors. [drive, angle]
         private static final boolean[] fl_SENSOR_PHASE = new boolean[]{false, false}; // inversions for the front left motors. [drive, angle]
-        private static final boolean[] rr_SENSOR_PHASE = new boolean[]{false, false}; // inversions for the rear right motors. [drive, angle]
+        private static final boolean[] fr_SENSOR_PHASE = new boolean[]{false, false}; // inversions for the front right motors. [drive, angle]
         private static final boolean[] rl_SENSOR_PHASE = new boolean[]{false, false}; // inversions for the rear left motors. [drive, angle]
+        private static final boolean[] rr_SENSOR_PHASE = new boolean[]{false, false}; // inversions for the rear right motors. [drive, angle]
 
-        public static final boolean[][] motorSENSOR_PHASE = new boolean[][]{ // all the inversions for the motors.
+        public static final boolean[][] motor_SENSOR_PHASE = new boolean[][]{ // all the inversions for the motors.
                 fl_SENSOR_PHASE, fr_SENSOR_PHASE, rl_SENSOR_PHASE, rr_SENSOR_PHASE
         };
     }
