@@ -119,18 +119,18 @@ public class SwerveModule extends SubsystemBase {
     /**
      * Sets the angle for the module.
      *
-     * @param angle is the angle to set the module to. [deg]
+     * @param reqAngle is the angle to set the module to. [deg]
      */
-    public void setAngle(double angle) {
+    public void setAngle(double reqAngle) {
         double currAngle = getAngle();
 
         currAngle %= 360;
         currAngle = (currAngle < 0) ? (360 + currAngle) : currAngle;
 
-        angle %= 360;
-        angle = (angle < 0) ? (360 + angle) : angle;
+        reqAngle %= 360;
+        reqAngle = (reqAngle < 0) ? (360 + reqAngle) : reqAngle;
         
-        double error = angle - currAngle;
+        double error = reqAngle - currAngle;
         error = (Math.abs(error) > 180) ? (error - (360 * Math.signum(error))) : error;
         error %= 360;
         error = Utils.checkDeadband(error, 0.01);
