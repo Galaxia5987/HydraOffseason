@@ -86,6 +86,7 @@ public class SwerveDrive extends SubsystemBase {
     public void configModules() {
         for (int i = 0; i < 4; i++) {
             modules[i] = new SwerveModule();
+            modules[i].setZeroPosition(ZERO_POSITIONS[i]);
             modules[i].setMotorPorts(Ports.SwerveDrive.motorPorts[i]);
             modules[i].setAnglePID(Constants.SwerveDrive.anglePID[i]);
             modules[i].setDrivePID(Constants.SwerveDrive.drivePID[i]);

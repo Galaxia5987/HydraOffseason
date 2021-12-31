@@ -45,6 +45,15 @@ public final class Constants {
         public static final double MAX_ROTATIONAL_VELOCITY = 4.5; // maximum velocity of the modules. [rad/s]
 
         public static final double DEADBAND = 0.02; // dead band for the joysticks.
+
+        public static final int[] fl_ZERO_POSITIONS = new int[]{0, 0};
+        public static final int[] fr_ZERO_POSITIONS = new int[]{0, 0};
+        public static final int[] rl_ZERO_POSITIONS = new int[]{0, 0};
+        public static final int[] rr_ZERO_POSITIONS = new int[]{0, 0};
+
+        public static final int[][] ZERO_POSITIONS = new int[][]{
+                fl_ZERO_POSITIONS, fr_ZERO_POSITIONS, rl_ZERO_POSITIONS, rr_ZERO_POSITIONS // fl, fr, rl, rr. [ticks]
+        };
     }
 
     public static class SwerveModule {

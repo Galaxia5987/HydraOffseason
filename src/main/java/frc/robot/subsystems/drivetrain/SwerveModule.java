@@ -104,10 +104,15 @@ public class SwerveModule extends SubsystemBase {
         angleMotor.setSensorPhase(sensorPhase[1]);
     }
 
+    public void setZeroPosition(int[] positions){
+        driveMotor.setSelectedSensorPosition(positions[0]);
+        angleMotor.setSelectedSensorPosition(positions[1]);
+    }
+
     /**
      * Gets the current angle of the module.
      *
-     * @return the angle of the module. [rad]
+     * @return the angle of the module. [deg]
      */
     public double getAngle() {
         return Math.IEEEremainder(
