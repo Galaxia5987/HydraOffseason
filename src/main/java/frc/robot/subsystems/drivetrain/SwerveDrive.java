@@ -33,7 +33,7 @@ public class SwerveDrive extends SubsystemBase {
      *
      * @param fieldOriented whether the robot is field oriented.
      */
-    public SwerveDrive(boolean fieldOriented) {
+    private SwerveDrive(boolean fieldOriented) {
         this.fieldOriented = fieldOriented;
 
         timer.start();
@@ -64,7 +64,7 @@ public class SwerveDrive extends SubsystemBase {
         SwerveDriveKinematics.normalizeWheelSpeeds(states, MAX_VELOCITY);
 
         for (int i = 0; i < 4; i++) {
-            SwerveModuleState.optimize(states[i], Rotation2d.fromDegrees(Robot.navx.getYaw()));
+            states[i] = SwerveModuleState.optimize(states[i], Rotation2d.fromDegrees(modules[i].getAngle()));
 
             modules[i].setAngle(states[i].angle.getDegrees());
             modules[i].setVelocity(states[i].speedMetersPerSecond, currentTime - lastTime);
@@ -83,15 +83,15 @@ public class SwerveDrive extends SubsystemBase {
     /**
      * Configures all the settings of each module.
      */
-    public void configModules() {
+    private void configModules() {
         for (int i = 0; i < 4; i++) {
             modules[i] = new SwerveModule();
-            modules[i].setZeroPosition(ZERO_POSITIONS[i]);
             modules[i].setMotorPorts(Ports.SwerveDrive.motorPorts[i]);
             modules[i].setAnglePID(Constants.SwerveDrive.anglePID[i]);
             modules[i].setDrivePID(Constants.SwerveDrive.drivePID[i]);
             modules[i].configInverted(Ports.SwerveDrive.motor_INVERTED[i]);
             modules[i].configSensorPhase(Ports.SwerveDrive.motor_SENSOR_PHASE[i]);
+            modules[i].setZeroPosition(ZERO_POSITIONS[i]);
         }
     }
 

@@ -34,7 +34,7 @@ public class SwerveModule extends SubsystemBase {
         LinearSystem<N1, N1, N1> module = new LinearSystem<>(
                 A, B, C, D
         );
-        KalmanFilter<N1, N1, N1> kalmanFilter = new KalmanFilter(
+        KalmanFilter<N1, N1, N1> kalmanFilter = new KalmanFilter<>(
                 Nat.N1(),
                 Nat.N1(),
                 module,
@@ -48,7 +48,7 @@ public class SwerveModule extends SubsystemBase {
                 VecBuilder.fill(SENSOR_TOLERANCE.get(0, 0)),
                 Constants.LOOP_PERIOD
         );
-        linearSystemLoop = new LinearSystemLoop<>(
+        linearSystemLoop = new LinearSystemLoop<N1, N1, N1>(
                 module, quadraticRegulator, kalmanFilter, NOMINAL_VOLTAGE, Constants.LOOP_PERIOD
         );
     }
@@ -56,7 +56,7 @@ public class SwerveModule extends SubsystemBase {
     /**
      * Sets the angle PID controller for the specific module.
      *
-     * @param anglePID is the array of PID configurations.
+     * @param anglePID is the array of PID configurations. [kP, kI, kD, kF]
      */
     public void setAnglePID(double[] anglePID) {
         angleMotor.config_kP(0, anglePID[0]);
@@ -67,7 +67,7 @@ public class SwerveModule extends SubsystemBase {
     /**
      * Sets the drive PID controller for the specific module.
      *
-     * @param drivePID is the array of PID configurations.
+     * @param drivePID is the array of PID configurations. [kP, kI, kD, kF]
      */
     public void setDrivePID(double[] drivePID) {
         driveMotor.config_kP(0, drivePID[0]);
@@ -78,7 +78,7 @@ public class SwerveModule extends SubsystemBase {
     /**
      * Sets the motor ports for the specific module.
      *
-     * @param ports is the array of ports.
+     * @param ports is the array of ports. [drive, angle]
      */
     public void setMotorPorts(int[] ports) {
         driveMotor = new WPI_TalonFX(ports[0]);
@@ -88,7 +88,7 @@ public class SwerveModule extends SubsystemBase {
     /**
      * Configures the inversions for the motors.
      *
-     * @param inverted is the array of inversions.
+     * @param inverted is the array of inversions. [drive, angle]
      */
     public void configInverted(boolean[] inverted) {
         driveMotor.setInverted(inverted[0]);
@@ -98,7 +98,7 @@ public class SwerveModule extends SubsystemBase {
     /**
      * Configure sensor phase for module.
      *
-     * @param sensorPhase is the array of sensor phases.
+     * @param sensorPhase is the array of sensor phases. [drive, angle]
      */
     public void configSensorPhase(boolean[] sensorPhase) {
         driveMotor.setSensorPhase(sensorPhase[0]);
@@ -108,7 +108,7 @@ public class SwerveModule extends SubsystemBase {
     /**
      * Sets the postions of the encoders.
      *
-     * @param positions is the array of positions.
+     * @param positions is the array of positions. [drive, angle]
      */
     public void setZeroPosition(int[] positions) {
         driveMotor.setSelectedSensorPosition(positions[0]);
