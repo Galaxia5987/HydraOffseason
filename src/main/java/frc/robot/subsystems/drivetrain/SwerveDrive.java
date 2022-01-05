@@ -16,7 +16,7 @@ import static frc.robot.Constants.Swerve.Ry;
  * Adding swerve kinematics.
  */
 public class SwerveDrive extends SubsystemBase {
-    public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics
+    private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics
             (new Translation2d(Rx, Ry),
                     new Translation2d(-Rx, Ry),
                     new Translation2d(Rx, -Ry),

@@ -8,6 +8,8 @@ public final class Ports {
         public static final boolean IS_AUX_INVERTED = false;
         public static final boolean IS_MAIN_SENSOR_INVERTED = false;
         public static final boolean IS_AUX_SENSOR_INVERTED = false;
+        public static final int [] DRIVE_MOTOR = {0, 0, 0, 0};
+        public static final int [] ANGLE_MOTOR = {0, 0, 0, 0};
     }
 
     public static class Controls {

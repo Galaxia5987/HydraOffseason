@@ -14,11 +14,11 @@ import frc.robot.subsystems.drivetrain.SwerveModule;
 public class HolonomicDrive extends CommandBase {
     private final SwerveDrive swerveDrives;
     private final XboxController xboxController = RobotContainer.xboxController;
-    private int i;
+    private int module;
 
-    public HolonomicDrive(SwerveDrive swerveDrives, int i) {
+    public HolonomicDrive(SwerveDrive swerveDrives, int module) {
         this.swerveDrives = swerveDrives;
-        this.i = i;
+        this.module = module;
         addRequirements(swerveDrives);
     }
 
@@ -43,6 +43,6 @@ public class HolonomicDrive extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        swerveDrives.getModule(i).stop();
+        swerveDrives.getModule(module).stop();
     }
 }

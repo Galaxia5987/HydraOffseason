@@ -23,7 +23,6 @@ public class Rotate extends CommandBase {
 
     @Override
     public void execute() {
-        desiredAngle.getAsDouble();
         swerveDrive.getModule(i).setAngle(desiredAngle.getAsDouble());
     }
 

@@ -9,17 +9,18 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Ports;
 import frc.robot.subsystems.UnitModel;
 
 /**
  * Add angle motor, drive motor, unitModelVelocity and unitModel.
  */
 public class SwerveModule extends SubsystemBase {
-    public WPI_TalonSRX angleMotor;
-    public WPI_TalonFX driveMotor;
-    private final UnitModel unitModelVelocity = new UnitModel(Constants.Swerve.VELOCITY_TICKS_PER_UNIT);
-    private final UnitModel unitModelDegree = new UnitModel(Constants.Swerve.DEGREE_TICKS_PER_UNIT);
-    private int i;
+    private final WPI_TalonSRX angleMotor;
+    private final WPI_TalonFX driveMotor;
+    private final UnitModel unitModelVelocity = new UnitModel(Constants.Swerve.VELOCITY_TICKS_PER_DEGREE);
+    private final UnitModel unitModelDegree = new UnitModel(Constants.Swerve.DEGREE_TICKS_PER_DEGREE);
+    private final int i;
 
     public SwerveModule(int i) {
         this.i = i;
@@ -27,25 +28,27 @@ public class SwerveModule extends SubsystemBase {
         /**
          * Add PID, encoder, Voltage Compensation, Current Limit.
          */
-        this.angleMotor = new WPI_TalonSRX(Constants.Swerve.ANGLE_MOTOR[i]);
-        angleMotor.config_kP(0, Constants.Swerve.ANGLE_MOTOR_PID_P[i]);
-        angleMotor.config_kI(0, Constants.Swerve.ANGLE_MOTOR_PID_I[i]);
-        angleMotor.config_kD(0, Constants.Swerve.ANGLE_MOTOR_PID_D[i]);
+        this.angleMotor = new WPI_TalonSRX(Ports.ExampleSubsystem.ANGLE_MOTOR[i]);
+        angleMotor.config_kP(0, Constants.Swerve.ANGLE_MOTOR_P[i]);
+        angleMotor.config_kI(0, Constants.Swerve.ANGLE_MOTOR_I[i]);
+        angleMotor.config_kD(0, Constants.Swerve.ANGLE_MOTOR_D[i]);
         this.angleMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog, 0, 10);
         angleMotor.enableVoltageCompensation(true);
         angleMotor.configPeakCurrentLimit(Constants.Swerve.CURRENT_LIMIT, 10);
+        angleMotor.configVoltageCompSaturation(0,10);
 
         /**
          * Add PID, encoder, Closed loop Ramp, Voltage Compensation, CurrentLimit.
          */
-        this.driveMotor = new WPI_TalonFX(Constants.Swerve.DRIVE_MOTOR[i]);
-        driveMotor.config_kP(0, Constants.Swerve.ANGLE_MOTOR_PID_P[i]);
-        driveMotor.config_kI(0, Constants.Swerve.ANGLE_MOTOR_PID_I[i]);
-        driveMotor.config_kD(0, Constants.Swerve.ANGLE_MOTOR_PID_D[i]);
+        this.driveMotor = new WPI_TalonFX(Ports.ExampleSubsystem.DRIVE_MOTOR[i]);
+        driveMotor.config_kP(0, Constants.Swerve.ANGLE_MOTOR_P[i]);
+        driveMotor.config_kI(0, Constants.Swerve.ANGLE_MOTOR_I[i]);
+        driveMotor.config_kD(0, Constants.Swerve.ANGLE_MOTOR_D[i]);
         this.driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 10);
         driveMotor.configClosedloopRamp(Constants.Swerve.RAMP_RATE);
         driveMotor.enableVoltageCompensation(true);
         driveMotor.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, Constants.Swerve.CURRENT_LIMIT, Constants.Swerve.TRIGGER_CURRENT, Constants.Swerve.TRIGGER_TIME), 10);
+        angleMotor.configVoltageCompSaturation(0,10);
     }
 
     /**
@@ -109,7 +112,7 @@ public class SwerveModule extends SubsystemBase {
      * @return sensor units per 100ms.
      */
     public double getVelocity() {
-        return unitModelVelocity.toVelocity(angleMotor.getSelectedSensorVelocity());
+        return unitModelVelocity.toVelocity(driveMotor.getSelectedSensorVelocity());
     }
 
     /**
